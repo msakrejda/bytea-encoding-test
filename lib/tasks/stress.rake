@@ -7,7 +7,9 @@ task :stress do
     begin
       Stresser.run_batch
     rescue StandardError => e
-      Rollbar.error(e)
+      puts "#{e.class}:#{e.message}\n#{e.backtrace.join("\n")}"
+    else
+      puts "batch completed"
     end
     sleep 1
   end
