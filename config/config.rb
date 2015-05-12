@@ -11,6 +11,7 @@ module Config
 
   # Mandatory -- exception is raised for these variables when missing.
   mandatory :database_url, string
+  mandatory :nine_one_database_url, string
 
   # Optional -- value is returned or `nil` if it wasn't present.
   optional :placeholder,         string
