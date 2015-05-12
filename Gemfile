@@ -18,6 +18,8 @@ gem "sinatra-contrib", require: ["sinatra/namespace", "sinatra/reloader"]
 gem "sinatra-router"
 gem "sucker_punch"
 
+gem 'attr_vault',  '~> 0.0.9'
+
 group :development, :test do
   gem "pry-byebug"
 end
