@@ -1,3 +1,5 @@
+require 'json'
+
 class ByteaThing < Sequel::Model
   plugin :timestamps
 
