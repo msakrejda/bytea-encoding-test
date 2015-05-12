@@ -3,7 +3,7 @@ class ByteaThing < Sequel::Model
 
 end
 
-class NineOneByteaThing < Sequel::Model
+class NineOneByteaThing < Sequel::Model(:bytea_things)
   self.db = NINE_ONE_DB
   plugin :timestamps
 
