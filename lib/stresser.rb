@@ -20,7 +20,7 @@ class Stresser
     end.each(&:join)
 
     [ ByteaThing, NineOneByteaThing ].map do |klazz|
-      klazz.delete
+      klazz.dataset.delete
     end    
   end
 end
