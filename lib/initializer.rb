@@ -12,6 +12,7 @@ module Initializer
 
   def self.require_lib
     require! %w(
+      lib/stresser
       lib/endpoints/base
       lib/endpoints/**/*
       lib/mediators/base
