@@ -57,7 +57,6 @@ INSERT INTO bytea_things(data) VALUES(:data)
 EOF
       end
     rescue StandardError => e
-      bogus_value = obj.values[:data]
       puts <<-EOF
 #{e.class}: #{e.message}
 #{e.backtrace.join("\n")}
