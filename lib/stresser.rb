@@ -14,8 +14,9 @@ class Stresser
 
   def self.test_bytea_encoding(db_url, len=32)
     Sequel.connect(db_url) do |c|
-      if actual = c.fetch("SELECT :bytes::bytea AS bytes",
-                          bytes: Sequel.blob(Random.new.bytes(len))).first[:bytes].length != len
+      actual = c.fetch("SELECT :bytes::bytea AS bytes",
+                       bytes: Sequel.blob(Random.new.bytes(len))).first[:bytes].length
+      if actual != len
         fail "Inconsistent bytea length: expected #{len}; got #{actual}"
       end
     end
