@@ -24,12 +24,6 @@ class Stresser
   def self.run_batch
     lock = Mutex.new
     active = true
-    http_thread = Thread.new do
-      while lock.synchronize { active } do
-        Net::HTTP.get('https://#{APP_NAME}.herokuapp.com/') rescue nil
-        sleep 0.05
-      end
-    end
     rand = Random.new
     sequel_thread = Thread.new do
       while lock.synchronize { active } do
@@ -67,7 +61,7 @@ class Stresser
     end
     lock.synchronize { active = false }
   ensure
-    [ http_thread, sequel_thread, sequel91_thread ].each do |thread|
+    [ sequel_thread, sequel91_thread ].each do |thread|
       thread.join unless thread.nil?
     end
   end
