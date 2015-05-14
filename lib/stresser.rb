@@ -28,7 +28,7 @@ class Stresser
     rand = Random.new
     sequel_thread = Thread.new do
       while lock.synchronize { active } do
-        test_bytea_encoding(ENV['DATABASE_URL'])
+        test_bytea_encoding(ENV['NINE_ONE_DATABASE_URL'])
       end
     end
 
