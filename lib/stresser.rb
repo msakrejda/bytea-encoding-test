@@ -31,11 +31,6 @@ class Stresser
         test_bytea_encoding(ENV['DATABASE_URL'])
       end
     end
-    sequel91_thread = Thread.new do
-      while lock.synchronize { active } do
-        test_bytea_encoding(ENV['NINE_ONE_DATABASE_URL'])
-      end
-    end
 
     [ ByteaThing, NineOneByteaThing ].map do |klazz|
       Thread.new do
@@ -62,8 +57,6 @@ class Stresser
     end
     lock.synchronize { active = false }
   ensure
-    [ sequel_thread, sequel91_thread ].each do |thread|
-      thread.join unless thread.nil?
-    end
+    sequel_thread.join unless sequel_thread.nil?
   end
 end
