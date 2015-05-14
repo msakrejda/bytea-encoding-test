@@ -48,11 +48,16 @@ class Stresser
       end
     end
 
-    obj = nil
+    data = nil
     begin
       1000.times do
-        obj = ByteaThing.create
-        obj.update(data: Sequel.blob(rand.bytes(176)))
+        id = DB.fetch(<<-EOF).first[:id]
+INSERT INTO bytea_things(id) VALUES(DEFAULT) RETURNING id
+EOF
+        data = Sequel.blob(rand.bytes(176))
+        DB.execute(DB.fetch(<<-EOF, id: id, data: data).sql)
+UPDATE bytea_things SET data = :data WHERE id = :id
+EOF
       end
     rescue StandardError => e
       bogus_value = obj.values[:data]
@@ -60,14 +65,14 @@ class Stresser
 #{e.class}: #{e.message}
 #{e.backtrace.join("\n")}
 bogus value is:
-  class: #{bogus_value.class}
-  length: #{bogus_value.length}
-  raw value: #{Base64.encode64(bogus_value)}
+  class: #{data.class}
+  length: #{data.length}
+  raw value: #{Base64.encode64(data)}
 EOF
       raise
     end
 
-    ByteaThing.dataset.delete
+    DB[:bytea_things].delete
 
     lock.synchronize { active = false }
   ensure
