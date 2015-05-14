@@ -48,7 +48,7 @@ class Stresser
       end
     end
 
-    [ ByteaThing, NineOneByteaThing ].map do |klazz|
+    [ NineOneByteaThing ].map do |klazz|
       Thread.new do
         obj = nil
         begin
