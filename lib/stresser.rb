@@ -51,12 +51,9 @@ class Stresser
     data = nil
     begin
       1000.times do
-        id = DB.fetch(<<-EOF).first[:id]
-INSERT INTO bytea_things(id) VALUES(DEFAULT) RETURNING id
-EOF
         data = Sequel.blob(rand.bytes(176))
-        DB.execute(DB.fetch(<<-EOF, id: id, data: data).sql)
-UPDATE bytea_things SET data = :data WHERE id = :id
+        DB.execute(DB.fetch(<<-EOF, data: data).sql)
+INSERT INTO bytea_things(data) VALUES(:data)
 EOF
       end
     rescue StandardError => e
