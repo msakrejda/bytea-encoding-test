@@ -44,11 +44,11 @@ class Stresser
     rand = Random.new
     sequel_thread = Thread.new do
       while lock.synchronize { active } do
-        test_bytea_encoding(ENV['DATABASE_URL'])
+        test_bytea_encoding(ENV['NINE_ONE_DATABASE_URL'])
       end
     end
 
-    [ ByteaThing ].map do |klazz|
+    [ NineOneByteaThing ].map do |klazz|
       Thread.new do
         obj = nil
         begin
@@ -70,7 +70,7 @@ EOF
       end
     end.each(&:join)
 
-    [ ByteaThing ].map do |klazz|
+    [ ByteaThing, NineOneByteaThing ].map do |klazz|
       klazz.dataset.delete
     end
     lock.synchronize { active = false }
