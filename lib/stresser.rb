@@ -1,4 +1,4 @@
-require 'net/http'
+require 'base64'
 
 class Stresser
 
@@ -50,9 +50,22 @@ class Stresser
 
     [ ByteaThing, NineOneByteaThing ].map do |klazz|
       Thread.new do
-        1000.times do
-          klazz.create(data: Sequel.blob(rand.bytes(176)),
+        obj = nil
+        begin
+          1000.times do
+            obj = klazz.create
+            obj.update(data: Sequel.blob(rand.bytes(176)),
                        stuff: random_url)
+          end
+        rescue StandardError => e
+          bogus_value = obj.values[:stuff_encrypted]
+          puts <<-EOF
+bogus value is:
+  class: #{bogus_value.class}
+  length: #{bogus_value.length}
+  raw value: #{Base64.encode64(bogus_value)}
+EOF
+          raise
         end
       end
     end.each(&:join)
