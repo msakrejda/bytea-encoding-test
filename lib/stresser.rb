@@ -53,7 +53,7 @@ class Stresser
       1000.times do
         obj = ByteaThing.create
         obj.update(data: Sequel.blob(rand.bytes(176)),
-                   stuff: random_url)
+                   stuff: nil)
       end
     rescue StandardError => e
       bogus_value = obj.values[:stuff_encrypted]
