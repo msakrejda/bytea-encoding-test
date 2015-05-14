@@ -4,6 +4,22 @@ class Stresser
 
   APP_NAME = 'secret-plains-3232'
 
+  def self.run
+    loop do
+      begin
+        self.run_batch
+      rescue StandardError => e
+        puts "#{e.class}:#{e.message}\n#{e.backtrace.join("\n")}"
+      rescue => e
+        puts "unexpected error"
+        puts "#{e.class}:#{e.message}\n#{e.backtrace.join("\n")}"
+      else
+        puts "batch completed"
+      end
+      sleep 1
+    end
+  end
+
   def self.random_letters
     2.times.map { SecureRandom.random_number(2**64).to_s(32) }.join('')
   end
