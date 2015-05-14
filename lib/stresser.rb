@@ -13,8 +13,10 @@ class Stresser
   end
 
   def self.run_batch
+    lock = Mutex.new
+    active = true
     http_thread = Thread.new do
-      loop do
+      while lock.synchronize { active } do
         Net::HTTP.get('https://#{APP_NAME}.herokuapp.com/') rescue nil
         sleep 0.05
       end
@@ -44,6 +46,7 @@ class Stresser
     [ ByteaThing, NineOneByteaThing ].map do |klazz|
       klazz.dataset.delete
     end
+    lock.synchronize { active = false }
     http_thread.join
   end
 end
