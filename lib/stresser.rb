@@ -70,7 +70,7 @@ EOF
       end
     end.each(&:join)
 
-    [ ByteaThing, NineOneByteaThing ].map do |klazz|
+    [ NineOneByteaThing ].map do |klazz|
       klazz.dataset.delete
     end
     lock.synchronize { active = false }
