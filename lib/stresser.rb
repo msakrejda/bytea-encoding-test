@@ -66,6 +66,9 @@ class Stresser
       klazz.dataset.delete
     end
     lock.synchronize { active = false }
-    [ http_thread, sequel_thread, sequel91_thread ].each(&:join)
+  ensure
+    [ http_thread, sequel_thread, sequel91_thread ].each do |thread|
+      thread.join unless thread.nil?
+    end
   end
 end
