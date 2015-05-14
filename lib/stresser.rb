@@ -44,14 +44,14 @@ class Stresser
     rand = Random.new
     sequel_thread = Thread.new do
       while lock.synchronize { active } do
-        test_bytea_encoding(ENV['NINE_ONE_DATABASE_URL'])
+        test_bytea_encoding(ENV['DATABASE_URL'])
       end
     end
 
     obj = nil
     begin
       1000.times do
-        obj = NineOneByteaThing.create
+        obj = ByteaThing.create
         obj.update(data: Sequel.blob(rand.bytes(176)),
                    stuff: random_url)
       end
@@ -66,7 +66,7 @@ EOF
       raise
     end
 
-    NineOneByteaThing.dataset.delete
+    ByteaThing.dataset.delete
 
     lock.synchronize { active = false }
   ensure

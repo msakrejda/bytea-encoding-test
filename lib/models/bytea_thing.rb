@@ -1,7 +1,6 @@
 require 'json'
 
-class NineOneByteaThing < Sequel::Model(:bytea_things)
-  self.db = NINE_ONE_DB
+class ByteaThing < Sequel::Model
   plugin :timestamps
 
   include AttrVault
