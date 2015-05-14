@@ -52,12 +52,13 @@ class Stresser
     begin
       1000.times do
         obj = ByteaThing.create
-        obj.update(data: Sequel.blob(rand.bytes(176)),
-                   stuff: nil)
+        obj.update(data: Sequel.blob(rand.bytes(176)))
       end
     rescue StandardError => e
-      bogus_value = obj.values[:stuff_encrypted]
+      bogus_value = obj.values[:data]
       puts <<-EOF
+#{e.class}: #{e.message}
+#{e.backtrace.join("\n")}
 bogus value is:
   class: #{bogus_value.class}
   length: #{bogus_value.length}
