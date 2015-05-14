@@ -42,7 +42,12 @@ class Stresser
     lock = Mutex.new
     active = true
     rand = Random.new
-    sequel_thread = nil
+    sequel_thread = Thread.new do
+      while lock.synchronize { active } do
+        test_bytea_encoding(ENV['DATABASE_URL'])
+      end
+    end
+
     obj = nil
     begin
       1000.times do
