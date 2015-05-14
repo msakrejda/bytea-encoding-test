@@ -42,17 +42,6 @@ class Stresser
     end.each(&:join)
 
     [ ByteaThing, NineOneByteaThing ].map do |klazz|
-      Thread.new do
-        all_things = klazz.all
-        1000.times do
-          thing = all_things.sample
-          thing.update(data: Sequel.blob(rand.bytes(176)),
-                       stuff: random_url)
-        end
-      end
-    end.each(&:join)
-
-    [ ByteaThing, NineOneByteaThing ].map do |klazz|
       klazz.dataset.delete
     end
     lock.synchronize { active = false }
